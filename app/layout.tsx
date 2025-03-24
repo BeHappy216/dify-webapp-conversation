@@ -4,6 +4,8 @@ import './styles/globals.css'
 import './styles/markdown.scss'
 import { Analytics } from '@vercel/analytics/react'; // 导入 Analytics 组件
 
+const BAIDU_TONGJI_ID = '400eac6fce29219a2b1c9dbfdf7563b1';
+
 const LocaleLayout = ({
   children,
 }: {
