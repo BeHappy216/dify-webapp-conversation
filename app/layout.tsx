@@ -2,6 +2,7 @@ import { getLocaleOnServer } from '@/i18n/server'
 
 import './styles/globals.css'
 import './styles/markdown.scss'
+import { Analytics } from '@vercel/analytics/react'; // 导入 Analytics 组件
 
 const LocaleLayout = ({
   children,
@@ -24,6 +25,7 @@ const LocaleLayout = ({
             {children}
           </div>
         </div>
+      <Analytics /> {/* 添加 Analytics 组件在这里 */}
       </body>
     </html>
   )
