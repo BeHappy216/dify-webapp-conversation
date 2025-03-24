@@ -26,6 +26,18 @@ const LocaleLayout = ({
           </div>
         </div>
       <Analytics /> {/* 添加 Analytics 组件在这里 */}
+      {/* 百度统计代码 - 使用你提供的代码 */}
+      <script dangerouslySetInnerHTML={{
+          __html: `
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?400eac6fce29219a2b1c9dbfdf7563b1";
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(hm, s);
+            })();
+          `,
+        }} />
       </body>
     </html>
   )
