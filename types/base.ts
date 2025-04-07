@@ -1,5 +1,5 @@
 export type TypeWithI18N<T = string> = {
-  'en_US': T
-  'zh_Hans': T
+  'en-US': T
+  'zh-Hans': T
   [key: string]: T
 }
