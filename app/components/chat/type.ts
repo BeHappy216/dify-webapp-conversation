@@ -33,6 +33,7 @@ export type Feedbacktype = {
 
 export type FeedbackFunc = (messageId: string, feedback: Feedbacktype) => Promise<any>
 export type SubmitAnnotationFunc = (messageId: string, content: string) => Promise<any>
+export type RegenerateFunc = (messageId: string) => void
 
 export type DisplayScene = 'web' | 'console'
 

@@ -7,7 +7,7 @@ import Textarea from 'rc-textarea'
 import s from './style.module.css'
 import Answer from './answer'
 import Question from './question'
-import type { FeedbackFunc } from './type'
+import type { FeedbackFunc, RegenerateFunc } from './type'
 import type { ChatItem, VisionFile, VisionSettings } from '@/types/app'
 import { TransferMethod } from '@/types/app'
 import Tooltip from '@/app/components/base/tooltip'
@@ -27,6 +27,7 @@ export type IChatProps = {
    */
   isHideSendInput?: boolean
   onFeedback?: FeedbackFunc
+  onRegenerate?: RegenerateFunc
   checkCanSend?: () => boolean
   onSend?: (message: string, files: VisionFile[]) => void
   useCurrentUserAvatar?: boolean
@@ -40,6 +41,7 @@ const Chat: FC<IChatProps> = ({
   feedbackDisabled = false,
   isHideSendInput = false,
   onFeedback,
+  onRegenerate,
   checkCanSend,
   onSend = () => { },
   useCurrentUserAvatar,
@@ -129,6 +131,7 @@ const Chat: FC<IChatProps> = ({
               item={item}
               feedbackDisabled={feedbackDisabled}
               onFeedback={onFeedback}
+              onRegenerate={onRegenerate}
               isResponding={isResponding && isLast}
             />
           }

@@ -5,7 +5,7 @@ import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
 import copy from 'copy-to-clipboard'
 import LoadingAnim from '../loading-anim'
-import type { FeedbackFunc } from '../type'
+import type { FeedbackFunc, RegenerateFunc } from '../type'
 import s from '../style.module.css'
 import ImageGallery from '../../base/image-gallery'
 import Thought from '../thought'
@@ -17,6 +17,7 @@ import WorkflowProcess from '@/app/components/workflow/workflow-process'
 import { Markdown } from '@/app/components/base/markdown'
 import type { Emoji } from '@/types/tools'
 import { Clipboard } from '@/app/components/base/icons/line/files'
+import RefreshCcw01 from '@/app/components/base/icons/line/refresh-ccw-01'
 
 const OperationBtn = ({ innerContent, onClick, className }: { innerContent: React.ReactNode; onClick?: () => void; className?: string }) => (
   <div
@@ -85,6 +86,7 @@ type IAnswerProps = {
   item: ChatItem
   feedbackDisabled: boolean
   onFeedback?: FeedbackFunc
+  onRegenerate?: RegenerateFunc
   isResponding?: boolean
   allToolIcons?: Record<string, string | Emoji>
 }
@@ -94,6 +96,7 @@ const Answer: FC<IAnswerProps> = ({
   item,
   feedbackDisabled = false,
   onFeedback,
+  onRegenerate,
   isResponding,
   allToolIcons,
 }) => {
@@ -144,6 +147,9 @@ const Answer: FC<IAnswerProps> = ({
       if (feedback?.rating) {
         return (
           <div className='flex gap-1'>
+            <Tooltip selector={`regenerate-${randomString(16)}`} content={t('common.operation.refresh') as string}>
+              {OperationBtn({ innerContent: <IconWrapper><RefreshCcw01 className="h-4 w-4" /></IconWrapper>, onClick: () => onRegenerate?.(id) })}
+            </Tooltip>
             <Tooltip selector={`copy-content-${randomString(16)}`} content={t('common.operation.copy') as string}>
               {OperationBtn({ innerContent: <IconWrapper><Clipboard className="h-4 w-4" /></IconWrapper>, onClick: () => {
                 copy(content)
@@ -161,6 +167,9 @@ const Answer: FC<IAnswerProps> = ({
           </Tooltip>
           <Tooltip selector={`user-feedback-${randomString(16)}`} content={t('common.operation.dislike') as string}>
             {OperationBtn({ innerContent: <IconWrapper><RatingIcon isLike={false} /></IconWrapper>, onClick: () => onFeedback?.(id, { rating: 'dislike' }) })}
+          </Tooltip>
+          <Tooltip selector={`regenerate-${randomString(16)}`} content={t('common.operation.refresh') as string}>
+            {OperationBtn({ innerContent: <IconWrapper><RefreshCcw01 className="h-4 w-4" /></IconWrapper>, onClick: () => onRegenerate?.(id) })}
           </Tooltip>
           <Tooltip selector={`copy-content-${randomString(16)}`} content={t('common.operation.copy') as string}>
             {OperationBtn({ innerContent: <IconWrapper><Clipboard className="h-4 w-4" /></IconWrapper>, onClick: () => {
