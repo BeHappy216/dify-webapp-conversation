@@ -599,6 +599,23 @@ const Main: FC<IMainProps> = () => {
     notify({ type: 'success', message: t('common.api.success') })
   }
 
+  const handleRegenerate = (messageId: string) => {
+    // 找到要重新生成的消息及其对应的问题
+    const messageIndex = chatList.findIndex(item => item.id === messageId)
+    if (messageIndex <= 0) return
+    
+    // 假设每个回答前面都有一个问题，获取对应问题的内容
+    const questionItem = chatList[messageIndex - 1]
+    if (!questionItem || questionItem.isAnswer) return
+    
+    // 删除从这个回答开始的所有后续消息
+    const newChatList = chatList.slice(0, messageIndex)
+    setChatList(newChatList)
+    
+    // 重新发送问题
+    handleSend(questionItem.content, questionItem.message_files)
+  }
+
   const renderSidebar = () => {
     if (!APP_ID || !APP_INFO || !promptConfig)
       return null
@@ -661,6 +678,7 @@ const Main: FC<IMainProps> = () => {
                     chatList={chatList}
                     onSend={handleSend}
                     onFeedback={handleFeedback}
+                    onRegenerate={handleRegenerate}
                     isResponding={isResponding}
                     checkCanSend={checkCanSend}
                     visionConfig={visionConfig}
