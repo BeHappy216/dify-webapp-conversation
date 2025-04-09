@@ -3,6 +3,7 @@ import type { FC } from 'react'
 import React from 'react'
 import { HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
+import copy from 'copy-to-clipboard'
 import LoadingAnim from '../loading-anim'
 import type { FeedbackFunc } from '../type'
 import s from '../style.module.css'
@@ -11,9 +12,11 @@ import Thought from '../thought'
 import { randomString } from '@/utils/string'
 import type { ChatItem, MessageRating, VisionFile } from '@/types/app'
 import Tooltip from '@/app/components/base/tooltip'
+import Toast from '@/app/components/base/toast'
 import WorkflowProcess from '@/app/components/workflow/workflow-process'
 import { Markdown } from '@/app/components/base/markdown'
 import type { Emoji } from '@/types/tools'
+import { Clipboard } from '@/app/components/base/icons/line/files'
 
 const OperationBtn = ({ innerContent, onClick, className }: { innerContent: React.ReactNode; onClick?: () => void; className?: string }) => (
   <div
@@ -32,7 +35,31 @@ const OpeningStatementIcon: FC<{ className?: string }> = ({ className }) => (
 )
 
 const RatingIcon: FC<{ isLike: boolean }> = ({ isLike }) => {
-  return isLike ? <HandThumbUpIcon className='w-4 h-4' /> : <HandThumbDownIcon className='w-4 h-4' />
+  return isLike 
+    ? (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
+        <g clipPath="url(#clip0_thumbs_up)">
+          <path d="M4.66671 14.6673V7.33398M1.33337 8.66732V13.334C1.33337 14.0704 1.93033 14.6673 2.66671 14.6673H11.6175C12.6047 14.6673 13.4442 13.9471 13.5943 12.9714L14.3122 8.30477C14.4986 7.09325 13.5613 6.00065 12.3355 6.00065H10C9.63185 6.00065 9.33337 5.70217 9.33337 5.33398V2.97788C9.33337 2.06998 8.59738 1.33398 7.68948 1.33398C7.47293 1.33398 7.27669 1.46151 7.18875 1.6594L4.84267 6.93808C4.73567 7.17883 4.49692 7.33398 4.23346 7.33398H2.66671C1.93033 7.33398 1.33337 7.93094 1.33337 8.66732Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_thumbs_up">
+            <rect width="16" height="16" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    ) 
+    : (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
+        <g clipPath="url(#clip0_thumbs_down)">
+          <path d="M11.3333 1.33268V8.66602M14.6667 7.33268V2.66602C14.6667 1.92964 14.0697 1.33268 13.3333 1.33268H4.38252C3.39533 1.33268 2.55581 2.05292 2.40571 3.02858L1.68783 7.69523C1.50142 8.90675 2.43873 9.99935 3.66449 9.99935H6C6.36819 9.99935 6.66667 10.2978 6.66667 10.666V13.0221C6.66667 13.93 7.40266 14.666 8.31056 14.666C8.52711 14.666 8.72335 14.5385 8.81129 14.3406L11.1574 9.06192C11.2644 8.82117 11.5031 8.66602 11.7666 8.66602H13.3333C14.0697 8.66602 14.6667 8.06906 14.6667 7.33268Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_thumbs_down">
+            <rect width="16" height="16" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    )
 }
 
 const EditIcon: FC<{ className?: string }> = ({ className }) => {
@@ -49,7 +76,7 @@ export const EditIconSolid: FC<{ className?: string }> = ({ className }) => {
 }
 
 const IconWrapper: FC<{ children: React.ReactNode | string }> = ({ children }) => {
-  return <div className={'rounded-lg h-6 w-6 flex items-center justify-center hover:bg-gray-100'}>
+  return <div className={'rounded-lg h-6 w-6 flex items-center justify-center hover:bg-gray-50'}>
     {children}
   </div>
 }
@@ -87,12 +114,11 @@ const Answer: FC<IAnswerProps> = ({
       return null
 
     const isLike = rating === 'like'
-    const ratingIconClassname = isLike ? 'text-primary-600 bg-primary-100 hover:bg-primary-200' : 'text-red-600 bg-red-100 hover:bg-red-200'
     // The tooltip is always displayed, but the content is different for different scenarios.
     return (
       <Tooltip
         selector={`user-feedback-${randomString(16)}`}
-        content={isLike ? '取消赞同' : '取消反对'}
+        content={isLike ? t('common.operation.cancelLike') || '' : t('common.operation.cancelDislike') || ''}
       >
         <div
           className={'relative box-border flex items-center justify-center h-7 w-7 p-0.5 rounded-lg bg-white cursor-pointer text-gray-500 hover:text-gray-800'}
@@ -101,7 +127,7 @@ const Answer: FC<IAnswerProps> = ({
             await onFeedback?.(id, { rating: null })
           }}
         >
-          <div className={`${ratingIconClassname} rounded-lg h-6 w-6 flex items-center justify-center`}>
+          <div className={isLike ? 'text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg h-6 w-6 flex items-center justify-center' : 'text-red-600 bg-red-50 hover:bg-red-100 rounded-lg h-6 w-6 flex items-center justify-center'}>
             <RatingIcon isLike={isLike} />
           </div>
         </div>
@@ -115,16 +141,35 @@ const Answer: FC<IAnswerProps> = ({
    */
   const renderItemOperation = () => {
     const userOperation = () => {
-      return feedback?.rating
-        ? null
-        : <div className='flex gap-1'>
+      if (feedback?.rating) {
+        return (
+          <div className='flex gap-1'>
+            <Tooltip selector={`copy-content-${randomString(16)}`} content={t('common.operation.copy') as string}>
+              {OperationBtn({ innerContent: <IconWrapper><Clipboard className="h-4 w-4" /></IconWrapper>, onClick: () => {
+                copy(content)
+                Toast.notify({ type: 'success', message: t('common.actionMsg.copySuccessfully') })
+              } })}
+            </Tooltip>
+          </div>
+        )
+      }
+      
+      return (
+        <div className='flex gap-1'>
           <Tooltip selector={`user-feedback-${randomString(16)}`} content={t('common.operation.like') as string}>
             {OperationBtn({ innerContent: <IconWrapper><RatingIcon isLike={true} /></IconWrapper>, onClick: () => onFeedback?.(id, { rating: 'like' }) })}
           </Tooltip>
           <Tooltip selector={`user-feedback-${randomString(16)}`} content={t('common.operation.dislike') as string}>
             {OperationBtn({ innerContent: <IconWrapper><RatingIcon isLike={false} /></IconWrapper>, onClick: () => onFeedback?.(id, { rating: 'dislike' }) })}
           </Tooltip>
+          <Tooltip selector={`copy-content-${randomString(16)}`} content={t('common.operation.copy') as string}>
+            {OperationBtn({ innerContent: <IconWrapper><Clipboard className="h-4 w-4" /></IconWrapper>, onClick: () => {
+              copy(content)
+              Toast.notify({ type: 'success', message: t('common.actionMsg.copySuccessfully') })
+            } })}
+          </Tooltip>
         </div>
+      )
     }
 
     return (

@@ -16,7 +16,13 @@ const translation = {
     lineBreak: '换行',
     like: '赞同',
     dislike: '反对',
+    cancelLike: '取消点赞',
+    cancelDislike: '取消点踩',
     ok: '好的',
+    copy: '复制',
+  },
+  actionMsg: {
+    copySuccessfully: '复制成功',
   },
   imageUploader: {
     uploadFromComputer: '从本地上传',
