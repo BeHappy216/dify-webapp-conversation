@@ -16,7 +16,13 @@ const translation = {
     lineBreak: '改行',
     like: 'いいね',
     dislike: 'よくないね',
+    cancelLike: 'いいねを取り消す',
+    cancelDislike: 'よくないねを取り消す',
     ok: 'OK',
+    copy: 'コピー',
+  },
+  actionMsg: {
+    copySuccessfully: 'コピーしました',
   },
   imageUploader: {
     uploadFromComputer: 'コンピューターからアップロード',

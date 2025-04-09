@@ -16,7 +16,13 @@ const translation = {
     lineBreak: 'Salto de línea',
     like: 'Me gusta',
     dislike: 'No me gusta',
+    cancelLike: 'Cancelar me gusta',
+    cancelDislike: 'Cancelar no me gusta',
     ok: 'OK',
+    copy: 'Copiar',
+  },
+  actionMsg: {
+    copySuccessfully: 'Copiado con éxito',
   },
   imageUploader: {
     uploadFromComputer: 'Subir desde el ordenador',

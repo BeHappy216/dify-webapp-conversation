@@ -16,6 +16,8 @@ const translation = {
     lineBreak: 'Line break',
     like: 'like',
     dislike: 'dislike',
+    cancelLike: 'Cancel like',
+    cancelDislike: 'Cancel dislike',
     ok: 'OK',
     copy: 'Copy',
   },

@@ -16,7 +16,13 @@ const translation = {
     lineBreak: 'Xuống dòng',
     like: 'thích',
     dislike: 'không thích',
+    cancelLike: 'Hủy thích',
+    cancelDislike: 'Hủy không thích',
     ok: 'OK',
+    copy: 'Sao chép',
+  },
+  actionMsg: {
+    copySuccessfully: 'Đã sao chép thành công',
   },
   imageUploader: {
     uploadFromComputer: 'Tải lên từ máy tính',
