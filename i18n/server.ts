@@ -18,12 +18,50 @@ export const getLocaleOnServer = (): Locale => {
   if (!languages.length) {
     // Negotiator expects plain object so we need to transform headers
     const negotiatorHeaders: Record<string, string> = {}
-    headers().forEach((value, key) => (negotiatorHeaders[key] = value))
-    // Use negotiator and intl-localematcher to get best locale
-    languages = new Negotiator({ headers: negotiatorHeaders }).languages()
+    try {
+      headers().forEach((value, key) => (negotiatorHeaders[key] = value))
+      // Use negotiator and intl-localematcher to get best locale
+      languages = new Negotiator({ headers: negotiatorHeaders }).languages()
+    } catch (error) {
+      console.error('Error in negotiator languages:', error)
+      languages = [i18n.defaultLocale]
+    }
+  }
+
+  // Sanitize and validate languages to ensure they are valid BCP 47 language tags
+  // This prevents Intl.getCanonicalLocales from throwing errors
+  const sanitizedLanguages = []
+  if (Array.isArray(languages)) {
+    for (const lang of languages) {
+      if (typeof lang === 'string') {
+        // Only accept valid BCP 47 language tags
+        if (/^[a-zA-Z0-9-]+$/.test(lang)) {
+          sanitizedLanguages.push(lang)
+        }
+      }
+    }
+  }
+  
+  // If no valid languages found, use default
+  if (sanitizedLanguages.length === 0) {
+    sanitizedLanguages.push(i18n.defaultLocale)
   }
 
   // match locale
-  const matchedLocale = match(languages, locales, i18n.defaultLocale) as Locale
-  return matchedLocale
+  try {
+    // Verify that all locales are valid before matching
+    const validLocales = locales.filter(locale => 
+      typeof locale === 'string' && /^[a-zA-Z0-9-]+$/.test(locale)
+    )
+    
+    if (validLocales.length === 0) {
+      return i18n.defaultLocale as Locale
+    }
+    
+    const matchedLocale = match(sanitizedLanguages, validLocales, i18n.defaultLocale) as Locale
+    return matchedLocale
+  } catch (error) {
+    console.error('Error in locale matching:', error)
+    return i18n.defaultLocale as Locale
+  }
 }
