@@ -434,7 +434,10 @@ const Main: FC<IMainProps> = () => {
         setConversationIdChangeBecauseOfNew(false)
         resetNewConversationInputs()
         setChatNotStarted()
-        setCurrConversationId(tempNewConversationId, APP_ID, true)
+        // Only update conversation ID if it's a new conversation and the ID is valid
+        if (getConversationIdChangeBecauseOfNew() && tempNewConversationId) {
+          setCurrConversationId(tempNewConversationId, APP_ID, true)
+        }
         setRespondingFalse()
       },
       onFile(file) {
