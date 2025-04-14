@@ -38,7 +38,7 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: "zenpath"
-          entrypoint: ".next"
+          entrypoint: "/src/out"
           root: "."
           
           
