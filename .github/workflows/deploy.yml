@@ -29,7 +29,7 @@ jobs:
           node-version: lts/*
 
       - name: Install step
-        run: "next install"
+        run: "npm install"
 
       - name: Build step
         run: "next build && next export"
