@@ -20,6 +20,9 @@ const translation = {
     cancelDislike: 'よくないねを取り消す',
     ok: 'OK',
     copy: 'コピー',
+    thinking: '考え中...',
+    stopped: '停止しました',
+    completed: '思考完了',
   },
   actionMsg: {
     copySuccessfully: 'コピーしました',

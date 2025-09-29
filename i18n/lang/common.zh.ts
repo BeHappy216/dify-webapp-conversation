@@ -20,6 +20,9 @@ const translation = {
     cancelDislike: '取消点踩',
     ok: '好的',
     copy: '复制',
+    thinking: '思考中...',
+    stopped: '已停止',
+    completed: '思考完成',
   },
   actionMsg: {
     copySuccessfully: '复制成功',
