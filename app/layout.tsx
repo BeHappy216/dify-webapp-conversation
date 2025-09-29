@@ -6,12 +6,12 @@ import { Analytics } from '@vercel/analytics/react'; // 导入 Analytics 组件
 
 const BAIDU_TONGJI_ID = '400eac6fce29219a2b1c9dbfdf7563b1';
 
-const LocaleLayout = ({
+const LocaleLayout = async ({
   children,
 }: {
   children: React.ReactNode
 }) => {
-  const locale = getLocaleOnServer()
+  const locale = await getLocaleOnServer()
   return (
     <html lang={locale ?? 'en'} className="h-full">
       <head>
@@ -27,9 +27,9 @@ const LocaleLayout = ({
             {children}
           </div>
         </div>
-      <Analytics /> {/* 添加 Analytics 组件在这里 */}
-      {/* 百度统计代码 - 使用你提供的代码 */}
-      <script dangerouslySetInnerHTML={{
+        <Analytics /> {/* 添加 Analytics 组件在这里 */}
+        {/* 百度统计代码 - 使用你提供的代码 */}
+        <script dangerouslySetInnerHTML={{
           __html: `
             var _hmt = _hmt || [];
             (function() {

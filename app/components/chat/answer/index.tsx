@@ -199,7 +199,7 @@ const Answer: FC<IAnswerProps> = ({
       {agent_thoughts?.map((item, index) => (
         <div key={index}>
           {item.thought && (
-            <Markdown content={item.thought} />
+            <Markdown content={item.thought} isStreaming={isResponding && !item.observation} />
           )}
           {/* {item.tool} */}
           {/* perhaps not use tool */}
@@ -245,7 +245,7 @@ const Answer: FC<IAnswerProps> = ({
                 : (isAgentMode
                   ? agentModeAnswer
                   : (
-                    <Markdown content={content} />
+                    <Markdown content={content} isStreaming={isResponding} />
                   ))}
             </div>
             <div className='absolute top-[-14px] right-[-14px] flex flex-row justify-end gap-1'>

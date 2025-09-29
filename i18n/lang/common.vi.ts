@@ -20,6 +20,9 @@ const translation = {
     cancelDislike: 'Hủy không thích',
     ok: 'OK',
     copy: 'Sao chép',
+    thinking: 'Đang suy nghĩ...',
+    stopped: 'Đã dừng',
+    completed: 'Hoàn thành suy nghĩ',
   },
   actionMsg: {
     copySuccessfully: 'Đã sao chép thành công',

@@ -2,8 +2,12 @@
 import classNames from 'classnames'
 import type { FC } from 'react'
 import React from 'react'
-import { Tooltip as ReactTooltip } from 'react-tooltip' // fixed version to 5.8.3 https://github.com/ReactTooltip/react-tooltip/issues/972
+import dynamic from 'next/dynamic'
 import 'react-tooltip/dist/react-tooltip.css'
+
+const ReactTooltip = dynamic(() => import('react-tooltip').then(m => m.Tooltip), {
+  ssr: false,
+})
 
 type TooltipProps = {
   selector: string
@@ -25,11 +29,8 @@ const Tooltip: FC<TooltipProps> = ({
   clickable,
 }) => {
   return (
-    <div className='tooltip-container'>
-      {React.cloneElement(children as React.ReactElement, {
-        'data-tooltip-id': selector,
-      })
-      }
+    <div className='tooltip-container' data-tooltip-id={selector}>
+      {children}
       <ReactTooltip
         id={selector}
         content={content}
